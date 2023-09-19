@@ -5,7 +5,7 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 //GLobal Varibles
-let ballX, ballSize=20, xSpeed=5, ballMove;
+let ballX, ballSize=20, xSpeed=5, ballMove, sizeChange = 5;
 let overlay; //"extra canvas"
 let colourA,colourB;
 let myName = "Hannah Tremaine"
@@ -20,9 +20,9 @@ function setup() {
 
 function mouseDrawings(){
   //draw a mouse at the mouse position 
-  if(keyIsPressed){
-    if (key==="1") overlay.fill(colourA);
-    if (key==="2") overlay.fill(colourB);
+  if(mouseIsPressed){
+    if (key==="1") overlay.fill(colourA),overlay.stroke(colourA);
+    if (key==="2") overlay.fill(colourB),overlay.stroke(colourB);
     if (key==="a") {
       overlay.rect(mouseX,mouseY,50,25);
     }
@@ -30,34 +30,47 @@ function mouseDrawings(){
       overlay.ellipse(mouseX,mouseY,50,25);
     }
     if (key==="d"){
-      overlay.triangle(mouseX+30,mouseY+75,mouseX+58,mouseY+20,mouseX+86,mouseY+75);
+      overlay.triangle(mouseX,mouseY,mouseX+50,mouseY+50,mouseX-50,mouseY+50);
     }
   }
+  if(keyIsPressed){
+    if (key===" ") overlay.clear();
+  }
   image(overlay,0,0);
+}
+
+function followMouse(){
+  stroke(100);
+  fill(100);
+  if (key === "a"){
+    rect(mouseX,mouseY,50,25);
+  }
+  if (key === "s"){
+    ellipse(mouseX,mouseY,50,25);
+  }
+  if (key === "d"){
+    triangle(mouseX,mouseY,mouseX+50,mouseY+50,mouseX-50,mouseY+50);;
+  }
 }
 
 function draw() {
   background(210, 247, 250);
   drawAndMoveBall();
+  followMouse()
   mouseDrawings();
   writeName();
 }
 
 function writeName(){
+  fill(235, 106, 159)
   textFont("Georgia",20);
-  text(myName,width*0.80,height*0.98)
+  text(myName,width*0.80,height*0.98);
 }
 function drawAndMoveBall(){
-  //update balls position
-  ballX = ballX + xSpeed;
-  //decide if we need to change directions
-  if (ballX+ballSize/2>=width){
-    xSpeed = -5;
+  ballSize = ballSize + sizeChange;
+  if (ballSize >= 100 || ballSize <= 10){
+    sizeChange = sizeChange * -1;
   }
-  if (ballX-ballSize/2<=0){
-    xSpeed = 5;
-  }
-  //render the ball on the screen
   fill(235, 106, 159);
   stroke(235, 106, 159);
   circle(ballX,height/2,ballSize);

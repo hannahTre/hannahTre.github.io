@@ -40,6 +40,7 @@ function renderSquares(){
   else{
     fillValue+=10;
   }
+  fillValue = constrain(fillValue, 0, 255); //if number is between range, returns fillvalue, if lower 0 etc
   fill(fillValue);
   rect(width/2,0,width/2,height); //right rect
 

@@ -13,7 +13,7 @@ function setup() {
 function draw() {
   background(220);
   drawRoad();
-  testCar.display();
+  testCar.action();
 }
 
 function drawRoad(){
@@ -32,7 +32,7 @@ function drawRoad(){
 class Vehicle{
   constructor(x,y){
     this.type=0; //o = car, 1 = truck
-    this.c = random(0,255);
+    this.c = color(random(0,255),random(0,255),random(0,255));
     this.x = x;
     this.y = y;
     this.direction = "left";
@@ -56,18 +56,32 @@ class Vehicle{
     }
   }
   move(){
-
+    this.x+=this.xSpeed;
   }
   speedUp(){
-
+    if(this.xSpeed>-15&&this.xSpeed<15){
+      this.xSpeed+=1;
+    }
   }
   speedDown(){
-
+    if(this.xSpeed>-15&&this.xSpeed<15){
+      this.xSpeed-=1;
+    }
   }
   changeColor(){
-    fill(this.c,this.c,this.c);
+    this.c = color(random(0,255),random(0,255),random(0,255));
   }
   action(){
-
+    this.move();
+    if(random(0,100)<1){
+      this.speedDown();
+    }
+    if(random(0,100)<1){
+      this.speedDown();
+    }
+    if(random(0,100)<1){
+      this.changeColor();
+    }
+    this.display();
   }
 }

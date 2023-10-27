@@ -162,8 +162,11 @@ class Vehicle{
     this.c = color(random(0,255),random(0,255),random(0,255));
   }
   action(){
+    //as long as light is green:
     if(light.type === 0){
+      //move
       this.move();
+      //1% chance for each other function to be called
       if(random(0,100)<1){
         this.speedUp();
       }
@@ -174,6 +177,7 @@ class Vehicle{
         this.changeColor();
       }
     }
+    //always  displays
     this.display();
   }
 }
@@ -184,6 +188,7 @@ class TrafficLight{
     this.frame = 0;
   }
   draw(){
+    //green or red circle
     if (this.type === 0){
       fill("green");
       circle(width*0.9,height*0.05,20)
@@ -191,14 +196,17 @@ class TrafficLight{
     if (this.type === 1){
       fill("red");
       circle(width*0.9,height*0.05,20);
+      //start counting to 120
       this.frame +=1;
       if (this.frame === 120){
+        //once frame = 120, turn back to green
         this.frame = 0;
         this.type = 0;
       }
     }
   }
   keyPressed(){
+    //red light
     if (key === " "){
       this.type = 1;
     }

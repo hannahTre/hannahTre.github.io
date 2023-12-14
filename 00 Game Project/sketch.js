@@ -5,7 +5,10 @@
 let tinyFishO, tinyFishPi, tinyFishPu, tinyFishR;
 let smallFishB, smallFishG, small
 let test;
-let testMenu;
+let openMenuButton;
+let shopMenu1;
+let shopMenu2;
+let menuOn = 0; //0 off, 1 shopMenu1
 
 function preload(){
   //tiny Fish
@@ -23,14 +26,28 @@ function setup() {
   createCanvas(800,400);
   textAlign(CENTER);
   test = new Fish(0,200,tinyFishR);
-  testMenu = new Menu();
+  shopMenu1 = new ShopMenu1();
+  shopMenu2 = new ShopMenu2();
+  openMenuButton = new Button(width*0.02,height*0.02,20,20,"magenta")
 }
 
 function draw() {
   clear();
   background(100);
   //scale(2);
-  testMenu.draw();
+  openMenuButton.update();
+  openMenuButton.draw();
+  if(openMenuButton.state === true){
+    menuOn=1;
+  }
+  if(menuOn===1){
+    shopMenu1.update();
+    shopMenu1.draw();
+  }
+  if(menuOn===2){
+    shopMenu2.update();
+    shopMenu2.draw();
+  }
   test.move();
   test.draw();
 	animation(tinyFishPu, 200, 100);
@@ -58,13 +75,12 @@ class Fish{
 }
 
 class Button{
-  constructor(x,y,w,h,color,text){
+  constructor(x,y,w,h,color){
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
     this.color = color;
-    this.text = text;
 
     this.state = false;
   }
@@ -73,14 +89,10 @@ class Button{
     if(this.state===false){
       fill(this.color);
       rect(this.x,this.y,this.w,this.h);
-      fill("black");
-      text(this.text,this.x+this.w/2,this.y+this.h/2);
     }
     else{
       fill("green");
       rect(this.x,this.y,this.w,this.h);
-      fill("black");
-      text("clicked",this.x+this.w/2,this.y+this.h/2);
     }
   }
 
@@ -97,22 +109,57 @@ class Button{
 
 class Menu{
   constructor(){
-    this.button1 = new Button(width*0.2,height*0.85,40,40,"red",1);
-    this.button2 = new Button(width*0.4,height*0.85,40,40,"blue",1);
-    this.button3 = new Button(width*0.6,height*0.85,40,40,"purple",1);
-    this.button4 = new Button(width*0.8,height*0.85,40,40,"yellow",1);
+    this.buttons = [];
   }
 
   draw(){
+    fill(200);
     rect(0,height*0.8,width,height*0.2);
-    this.button1.update();
-    this.button1.draw();
-    this.button2.update();
-    this.button2.draw();
-    this.button3.update();
-    this.button3.draw();
-    this.button4.update();
-    this.button4.draw();
+    for(let i = 0;i<this.buttons.length;i++){
+      this.buttons[i].update();
+      this.buttons[i].draw();
+    }
   }
 
+}
+
+class ShopMenu1 extends Menu{
+  constructor(){
+    super();
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"))
+    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"red",1));
+    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"blue",2));
+    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"purple",3));
+    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"yellow",4));
+  }
+
+  update(){
+    if(this.buttons[0].state === true){
+      menuOn = 0;
+    }
+    if(this.buttons[1].state===true){
+      menuOn = 2;
+    }
+  }
+
+}
+
+class ShopMenu2 extends Menu{
+  constructor(){
+    super();
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
+    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"orange",1));
+    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"green",2));
+    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"pink",3));
+    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"teal",4));
+  }
+  update(){
+    if(this.buttons[0].state === true){
+      menuOn = 0;
+    }
+    if(this.buttons[1].state===true){
+      menuOn = 1;
+    }
+  }
 }

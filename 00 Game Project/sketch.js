@@ -11,8 +11,14 @@ let uiImages = [];
 let backgroundImages = [];
 let programStarted = false;
 let totalCounter = 0;
-//shop items
+//shop items animation
+//fish
 let tinyFishO, tinyFishPi, tinyFishPu, tinyFishR;
+let smallFishB, smallFishG, smallFishO, smallFishP;
+let longFishB, longFishP, longFishO, longFishR;
+let jellyP, jellyB, sawshark, angler, shark, swordfish, squidR, squidP;
+//decor
+let bubbles, chest1, chest2, clam;
 //test fish class
 let testFish;
 //mouseisclicked
@@ -90,10 +96,32 @@ function setup() {
 }
 
 function createSprites(){
+  //fish
   tinyFishO = loadAnimation(fishImages[0], { frameSize: [16, 16], frames: 32 });
   tinyFishPi = loadAnimation(fishImages[1], { frameSize: [16, 16], frames: 32 });
   tinyFishPu = loadAnimation(fishImages[2], { frameSize: [16, 16], frames: 32 });
   tinyFishR = loadAnimation(fishImages[3], { frameSize: [16, 16], frames: 32 });
+  smallFishB = loadAnimation(fishImages[4], { frameSize: [32, 16], frames: 32 });
+  smallFishG = loadAnimation(fishImages[5], { frameSize: [32, 16], frames: 32 });
+  smallFishO = loadAnimation(fishImages[6], { frameSize: [32, 16], frames: 32 });
+  smallFishP = loadAnimation(fishImages[7], { frameSize: [32, 16], frames: 32 });
+  longFishB = loadAnimation(fishImages[8], { frameSize: [32, 16], frames: 32 });
+  longFishP = loadAnimation(fishImages[9], { frameSize: [32, 16], frames: 32 });
+  longFishO = loadAnimation(fishImages[10], { frameSize: [32, 16], frames: 32 });
+  longFishR = loadAnimation(fishImages[11], { frameSize: [32, 16], frames: 32 });
+  jellyP = loadAnimation(fishImages[12], { frameSize: [32, 16], frames: 4 });
+  jellyB = loadAnimation(fishImages[12], { frameSize: [32, 16], frames: 8 });
+  sawshark = loadAnimation(fishImages[13], { frameSize: [48, 32], frames: 16 });
+  angler = loadAnimation(fishImages[14], { frameSize: [32, 32], frames: 16 });
+  shark = loadAnimation(fishImages[15], { frameSize: [32, 32], frames: 16 });
+  swordfish = loadAnimation(fishImages[16], { frameSize: [48, 32], frames: 8 });
+  squidR = loadAnimation(fishImages[17], { frameSize: [32, 16], frames: 4 });
+  squidP = loadAnimation(fishImages[17], { frameSize: [32, 16], frames: 8 });
+  //decor
+  bubbles = loadAnimation(decorImages[0], { frameSize: [8, 8], frames: 8 });
+  chest1 = loadAnimation(decorImages[0], { frameSize: [16, 32], frames: 3 });
+  chest2 = loadAnimation(decorImages[0], { frameSize: [16, 32], frames: 6 });
+  clam = loadAnimation(decorImages[0], { frameSize: [16, 16], frames: 4 });
 }
 
 function draw() {
@@ -114,7 +142,9 @@ function draw() {
     openMenuButton.update();
     openMenuButton.draw();
     chooseMenu();
+    animation(smallFishO, width/2, 100);
     animation(tinyFishPu, 200, 100);
+    animation(jellyP,width/2,height/2);
   }
 }
 

@@ -2,9 +2,17 @@
 // Hannah Tremaine
 // Start - November 30th, 2023
 
+//preload stuff
+let fishImages = [];
+let decorImages = [];
+let plantImages = [];
+let buttonImages = [];
+let uiImages = [];
+let backgroundImages = [];
+let programStarted = false;
+let totalCounter = 0;
 //shop items
 let tinyFishO, tinyFishPi, tinyFishPu, tinyFishR;
-let smallFishB, smallFishG, small
 //test fish class
 let testFish;
 //mouseisclicked
@@ -21,21 +29,33 @@ let shopMenu24, shopMenu25, shopMenu26, shopMenu27, shopMenu28, shopMenu29;
 //varible controlling what menu is seen
 let menuOn = 0; //0 off, 1 shopMenu1, 2 shopMenu2 and so forth
 
-function preload(){
-  //tiny Fish
-  tinyFishO = loadAnimation('assets/shopItems/fish/Fish1 - 16x16/Orange.png', { frameSize: [16, 16], frames: 32 });
-  tinyFishPi = loadAnimation('assets/shopItems/fish/Fish1 - 16x16/Pink.png', { frameSize: [16, 16], frames: 32 });
-  tinyFishPu = loadAnimation('assets/shopItems/fish/Fish1 - 16x16/Purple.png', { frameSize: [16, 16], frames: 32 });
-  tinyFishR = loadAnimation('assets/shopItems/fish/Fish1 - 16x16/Red.png', { frameSize: [16, 16], frames: 32 });
-  //small fish
-
-  //medium fish
-
+function finishedLoading(){
+  totalCounter++;
+  print(totalCounter);
 }
+
+
 
 function setup() {
   createCanvas(800,400);
-  textAlign(CENTER);
+  for(let i =0; i<18;i++){ //fish images
+    fishImages.push(loadImage("assets/shopItems/fish/fish"+(i)+".png",finishedLoading))
+  }
+  for(let i =0; i<4;i++){ //decor images
+    decorImages.push(loadImage("assets/shopItems/decor/decor"+(i)+".png",finishedLoading))
+  }
+  for(let i =0; i<6;i++){ //plant images
+    plantImages.push(loadImage("assets/shopItems/plants/plant"+(i)+".png",finishedLoading))
+  }
+  for(let i =0; i<51;i++){ //button images
+    buttonImages.push(loadImage("assets/buttons/button"+(i)+".jpg",finishedLoading))
+  }
+  for(let i =0; i<12;i++){ //ui images
+    uiImages.push(loadImage("assets/ui/ui buttons/b"+(i)+".png",finishedLoading))
+  }
+  for(let i =0; i<5;i++){ //plant images
+    backgroundImages.push(loadImage("assets/backgrounds/water"+(i)+".png",finishedLoading))
+  }
   testFish = new Fish(0,200,tinyFishR);
   shopMenu1 = new ShopMenu1();
   shopMenu2 = new ShopMenu2();
@@ -69,15 +89,33 @@ function setup() {
   openMenuButton = new Button(width*0.02,height*0.02,20,20,"magenta")
 }
 
+function createSprites(){
+  tinyFishO = loadAnimation(fishImages[0], { frameSize: [16, 16], frames: 32 });
+  tinyFishPi = loadAnimation(fishImages[1], { frameSize: [16, 16], frames: 32 });
+  tinyFishPu = loadAnimation(fishImages[2], { frameSize: [16, 16], frames: 32 });
+  tinyFishR = loadAnimation(fishImages[3], { frameSize: [16, 16], frames: 32 });
+}
+
 function draw() {
-  clear();
-  background(100);
-  openMenuButton.update();
-  openMenuButton.draw();
-  chooseMenu();
-  testFish.move();
-  testFish.draw();
-	animation(tinyFishPu, 200, 100);
+  if(!programStarted){
+    if(totalCounter<96){
+      fill(255,0,0);
+      rect(0,0,width,height);
+    }
+    else{
+      createSprites();
+      programStarted = true;
+    }  
+  }
+  else{
+    clear();
+    fill(100);
+    rect(0,0,width,height);
+    openMenuButton.update();
+    openMenuButton.draw();
+    chooseMenu();
+    animation(tinyFishPu, 200, 100);
+  }
 }
 
 function mouseClicked(){

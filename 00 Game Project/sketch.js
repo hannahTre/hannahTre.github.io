@@ -35,6 +35,13 @@ let shopMenu24, shopMenu25, shopMenu26, shopMenu27, shopMenu28, shopMenu29;
 //varible controlling what menu is seen
 let menuOn = 0; //0 off, 1 shopMenu1, 2 shopMenu2 and so forth
 
+//controls for previewing item
+let previewMode = false;
+let previewTest = [];
+
+//in aquarium
+let fishInAquarium = [];
+
 function finishedLoading(){
   totalCounter++;
   print(totalCounter);
@@ -145,11 +152,22 @@ function draw() {
     animation(smallFishO, width/2, 100);
     animation(tinyFishPu, 200, 100);
     animation(jellyP,width/2,height/2);
+    for(p of previewTest){
+      p.preview();
+    }
+    for(f of fishInAquarium){
+      f.draw();
+      f.move();
+    }
   }
 }
 
-function mouseClicked(){
+function mousePressed(){
   isTriggered = true;
+}
+
+function mouseReleased(){
+  isTriggered = false;
 }
 
 function chooseMenu(){
@@ -324,6 +342,23 @@ class Button{
     }
     else{
       this.state = false;
+    }
+  }
+
+}
+
+class Preview{
+  constructor(item){
+    this.item = item
+  }
+
+  preview(){
+    if(previewMode){
+      animation(this.item,mouseX,mouseY);
+      if(mousePressed&&isTriggered){
+        previewMode = false;
+        fishInAquarium.push(new Fish(mouseX,mouseY,this.item));
+      }
     }
   }
 
@@ -526,6 +561,10 @@ class ShopMenu7 extends Menu{ //tiny fish colors
     }
     if(this.buttons[1].state===true){
       menuOn = 6;
+    }
+    if(this.buttons[2].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(tinyFishO));
     }
   }
 }

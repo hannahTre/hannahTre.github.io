@@ -47,6 +47,8 @@ function createSprites() {
 function draw() {
   if (!programStarted) {
     if (loadingCounter < 9) { //still loading...could add a progress bar if needed
+      fill(255,0,0);
+      rect(0,0,width,height);
       fill(255); circle(0, 0, height);
       fill(200, 150, 100);
       circle(0, 0, map(loadingCounter, 0, 9, 0, height));

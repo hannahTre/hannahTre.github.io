@@ -192,8 +192,8 @@ function draw() {
   else{
     clear();
     fill(100);
-    backgroundImages[2].resizeNN(800,400)
-    backgroundImages[0].resizeNN(800,400)
+    backgroundImages[2].resizeNN(800,400);
+    backgroundImages[0].resizeNN(800,400);
     image(backgroundImages[2],0,0);
     image(backgroundImages[0],0,0);
     openMenuButton.update();
@@ -378,16 +378,16 @@ class Button{
   draw(){
     if(this.state===false){
       if(this.image === "x"){
-        this.image = this.image.resizeNN(this.width,this.height);
-        image(this.image,this.width,this.height);
+        //this.image = this.image.resizeNN(this.width,this.height);
+        image(uiImages[1],this.x,this.y);
       }
       if(this.image === "back"){
         fill(this.color);
         rect(this.x,this.y,this.w,this.h);
       }
       else{
-        this.image = this.image.resizeNN(this.width,this.height);
-        image(this.image,this.width,this.height);
+        //this.image = this.image.resizeNN(this.width,this.height);
+        image(this.image,this.x,this.y);
       }
     }
     else{
@@ -448,11 +448,11 @@ class Menu{
 class ShopMenu1 extends Menu{ //Main shop menu,, pick which TYPE of item
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red",))
-    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"blue"));
-    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"purple"));
-    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"yellow"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"))
+    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"blue",buttonImages[0]));
+    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"purple",buttonImages[0]));
+    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"yellow",buttonImages[0]));
   }
 
   update(){
@@ -480,10 +480,10 @@ class ShopMenu2 extends Menu{ //FISH MAIN MENU
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x")); //exit
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow")); //back
-    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"orange")); //fish
-    this.buttons.push(new Button(width*0.5,height*0.85,40,40,"green")); //shark
-    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"purple")); //other
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back")); //back
+    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"orange",buttonImages[0])); //fish
+    this.buttons.push(new Button(width*0.5,height*0.85,40,40,"green",buttonImages[0])); //shark
+    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"purple",buttonImages[0])); //other
   }
   update(){
     if(this.buttons[0].state === true){
@@ -509,10 +509,10 @@ class ShopMenu3 extends Menu{ //DECOR MAIN MENU
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"teal"));
-    this.buttons.push(new Button(width*0.5,height*0.85,40,40,"purple"));
-    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"blue"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"teal",buttonImages[0]));
+    this.buttons.push(new Button(width*0.5,height*0.85,40,40,"purple",buttonImages[0]));
+    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"blue",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -537,9 +537,9 @@ class ShopMenu4 extends Menu{ //BACKGROUND MAIN MENU
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"pink"));
-    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"coral"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"pink",buttonImages[0]));
+    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"coral",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -562,9 +562,9 @@ class ShopMenu5 extends Menu{ //BACKGROUND MAIN MENU
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"teal"));
-    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"blue"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"teal",buttonImages[0]));
+    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"blue",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -586,10 +586,10 @@ class ShopMenu6 extends Menu{ //types of fish
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x")); //exit
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow")); //back
-    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"black")); //tiny
-    this.buttons.push(new Button(width*0.5,height*0.85,40,40,"white")); //normal
-    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"gray")); //long
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back")); //back
+    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"black",buttonImages[0])); //tiny
+    this.buttons.push(new Button(width*0.5,height*0.85,40,40,"white",buttonImages[0])); //normal
+    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"gray",buttonImages[0])); //long
   }
   update(){
     if(this.buttons[0].state === true){
@@ -614,11 +614,11 @@ class ShopMenu7 extends Menu{ //tiny fish colors
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"orange"));
-    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"orange"));
-    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"orange"));
-    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"orange"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"orange",buttonImages[0]));
+    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"orange",buttonImages[0]));
+    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"orange",buttonImages[0]));
+    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"orange",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -638,11 +638,11 @@ class ShopMenu8 extends Menu{ //normal fish colors
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"purple"));
-    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"purple"));
-    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"purple"));
-    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"purple"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"purple",buttonImages[0]));
+    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"purple",buttonImages[0]));
+    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"purple",buttonImages[0]));
+    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"purple",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -658,11 +658,11 @@ class ShopMenu9 extends Menu{ //long fish colors
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"pink"));
-    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"pink"));
-    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"pink"));
-    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"pink"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"pink",buttonImages[0]));
+    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"pink",buttonImages[0]));
+    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"pink",buttonImages[0]));
+    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"pink",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -678,9 +678,9 @@ class ShopMenu10 extends Menu{ //bubble and clam
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"pink"));
-    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"pink"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"pink",buttonImages[0]));
+    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"pink",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -696,9 +696,9 @@ class ShopMenu11 extends Menu{ //chest options
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"yellow"));
-    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"yellow"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"yellow",buttonImages[0]));
+    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"yellow",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -714,12 +714,12 @@ class ShopMenu12 extends Menu{ //shell shapes
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"blue"));
-    this.buttons.push(new Button(width*0.35,height*0.85,40,40,"cyan"));
-    this.buttons.push(new Button(width*0.5,height*0.85,40,40,"blue"));
-    this.buttons.push(new Button(width*0.65,height*0.85,40,40,"cyan"));
-    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"blue"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"blue",buttonImages[0]));
+    this.buttons.push(new Button(width*0.35,height*0.85,40,40,"cyan",buttonImages[0]));
+    this.buttons.push(new Button(width*0.5,height*0.85,40,40,"blue",buttonImages[0]));
+    this.buttons.push(new Button(width*0.65,height*0.85,40,40,"cyan",buttonImages[0]));
+    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"blue",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -750,13 +750,13 @@ class ShopMenu13 extends Menu{ //shell shapes
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.12,height*0.85,40,40,"blue"));
-    this.buttons.push(new Button(width*0.28,height*0.85,40,40,"blue"));
-    this.buttons.push(new Button(width*0.44,height*0.85,40,40,"blue"));
-    this.buttons.push(new Button(width*0.60,height*0.85,40,40,"blue"));
-    this.buttons.push(new Button(width*0.76,height*0.85,40,40,"blue"));
-    this.buttons.push(new Button(width*0.92,height*0.85,40,40,"blue"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.12,height*0.85,40,40,"blue",buttonImages[0]));
+    this.buttons.push(new Button(width*0.28,height*0.85,40,40,"blue",buttonImages[0]));
+    this.buttons.push(new Button(width*0.44,height*0.85,40,40,"blue",buttonImages[0]));
+    this.buttons.push(new Button(width*0.60,height*0.85,40,40,"blue",buttonImages[0]));
+    this.buttons.push(new Button(width*0.76,height*0.85,40,40,"blue",buttonImages[0]));
+    this.buttons.push(new Button(width*0.92,height*0.85,40,40,"blue",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -772,13 +772,13 @@ class ShopMenu14 extends Menu{ //shell shapes
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.12,height*0.85,40,40,"pink"));
-    this.buttons.push(new Button(width*0.28,height*0.85,40,40,"pink"));
-    this.buttons.push(new Button(width*0.44,height*0.85,40,40,"pink"));
-    this.buttons.push(new Button(width*0.60,height*0.85,40,40,"pink"));
-    this.buttons.push(new Button(width*0.76,height*0.85,40,40,"pink"));
-    this.buttons.push(new Button(width*0.92,height*0.85,40,40,"pink"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.12,height*0.85,40,40,"pink",buttonImages[0]));
+    this.buttons.push(new Button(width*0.28,height*0.85,40,40,"pink",buttonImages[0]));
+    this.buttons.push(new Button(width*0.44,height*0.85,40,40,"pink",buttonImages[0]));
+    this.buttons.push(new Button(width*0.60,height*0.85,40,40,"pink",buttonImages[0]));
+    this.buttons.push(new Button(width*0.76,height*0.85,40,40,"pink",buttonImages[0]));
+    this.buttons.push(new Button(width*0.92,height*0.85,40,40,"pink",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -794,13 +794,13 @@ class ShopMenu15 extends Menu{ //shell shapes
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.12,height*0.85,40,40,"purple"));
-    this.buttons.push(new Button(width*0.28,height*0.85,40,40,"purple"));
-    this.buttons.push(new Button(width*0.44,height*0.85,40,40,"purple"));
-    this.buttons.push(new Button(width*0.60,height*0.85,40,40,"purple"));
-    this.buttons.push(new Button(width*0.76,height*0.85,40,40,"purple"));
-    this.buttons.push(new Button(width*0.92,height*0.85,40,40,"purple"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.12,height*0.85,40,40,"purple",buttonImages[0]));
+    this.buttons.push(new Button(width*0.28,height*0.85,40,40,"purple",buttonImages[0]));
+    this.buttons.push(new Button(width*0.44,height*0.85,40,40,"purple",buttonImages[0]));
+    this.buttons.push(new Button(width*0.60,height*0.85,40,40,"purple",buttonImages[0]));
+    this.buttons.push(new Button(width*0.76,height*0.85,40,40,"purple",buttonImages[0]));
+    this.buttons.push(new Button(width*0.92,height*0.85,40,40,"purple",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -816,13 +816,13 @@ class ShopMenu16 extends Menu{ //shell shapes
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.12,height*0.85,40,40,"orange"));
-    this.buttons.push(new Button(width*0.28,height*0.85,40,40,"orange"));
-    this.buttons.push(new Button(width*0.44,height*0.85,40,40,"orange"));
-    this.buttons.push(new Button(width*0.60,height*0.85,40,40,"orange"));
-    this.buttons.push(new Button(width*0.76,height*0.85,40,40,"orange"));
-    this.buttons.push(new Button(width*0.92,height*0.85,40,40,"orange"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.12,height*0.85,40,40,"orange",buttonImages[0]));
+    this.buttons.push(new Button(width*0.28,height*0.85,40,40,"orange",buttonImages[0]));
+    this.buttons.push(new Button(width*0.44,height*0.85,40,40,"orange",buttonImages[0]));
+    this.buttons.push(new Button(width*0.60,height*0.85,40,40,"orange",buttonImages[0]));
+    this.buttons.push(new Button(width*0.76,height*0.85,40,40,"orange",buttonImages[0]));
+    this.buttons.push(new Button(width*0.92,height*0.85,40,40,"orange",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -838,13 +838,13 @@ class ShopMenu17 extends Menu{ //shell shapes
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.12,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.28,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.44,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.60,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.76,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.92,height*0.85,40,40,"red"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.12,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.28,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.44,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.60,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.76,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.92,height*0.85,40,40,"red",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -860,11 +860,11 @@ class ShopMenu18 extends Menu{ //coral options
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"orange"));
-    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"yellow"));
-    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"purple"));
-    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"green"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"orange",buttonImages[0]));
+    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"yellow",buttonImages[0]));
+    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"purple",buttonImages[0]));
+    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"green",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -892,12 +892,12 @@ class ShopMenu19 extends Menu{ //seaweed
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.5,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"red"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.5,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"red",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -913,14 +913,14 @@ class ShopMenu20 extends Menu{ //coral 1
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"orange"));
-    this.buttons.push(new Button(width*0.3,height*0.85,40,40,"orange"));
-    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"orange"));
-    this.buttons.push(new Button(width*0.5,height*0.85,40,40,"orange"));
-    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"orange"));
-    this.buttons.push(new Button(width*0.7,height*0.85,40,40,"orange"));
-    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"orange"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"orange",buttonImages[0]));
+    this.buttons.push(new Button(width*0.3,height*0.85,40,40,"orange",buttonImages[0]));
+    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"orange",buttonImages[0]));
+    this.buttons.push(new Button(width*0.5,height*0.85,40,40,"orange",buttonImages[0]));
+    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"orange",buttonImages[0]));
+    this.buttons.push(new Button(width*0.7,height*0.85,40,40,"orange",buttonImages[0]));
+    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"orange",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -936,14 +936,14 @@ class ShopMenu21 extends Menu{ //coral 2
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"green"));
-    this.buttons.push(new Button(width*0.3,height*0.85,40,40,"green"));
-    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"green"));
-    this.buttons.push(new Button(width*0.5,height*0.85,40,40,"green"));
-    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"green"));
-    this.buttons.push(new Button(width*0.7,height*0.85,40,40,"green"));
-    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"green"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"green",buttonImages[0]));
+    this.buttons.push(new Button(width*0.3,height*0.85,40,40,"green",buttonImages[0]));
+    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"green",buttonImages[0]));
+    this.buttons.push(new Button(width*0.5,height*0.85,40,40,"green",buttonImages[0]));
+    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"green",buttonImages[0]));
+    this.buttons.push(new Button(width*0.7,height*0.85,40,40,"green",buttonImages[0]));
+    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"green",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -959,14 +959,14 @@ class ShopMenu22 extends Menu{ //coral 3
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"pink"));
-    this.buttons.push(new Button(width*0.3,height*0.85,40,40,"pink"));
-    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"pink"));
-    this.buttons.push(new Button(width*0.5,height*0.85,40,40,"pink"));
-    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"pink"));
-    this.buttons.push(new Button(width*0.7,height*0.85,40,40,"pink"));
-    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"pink"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"pink",buttonImages[0]));
+    this.buttons.push(new Button(width*0.3,height*0.85,40,40,"pink",buttonImages[0]));
+    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"pink",buttonImages[0]));
+    this.buttons.push(new Button(width*0.5,height*0.85,40,40,"pink",buttonImages[0]));
+    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"pink",buttonImages[0]));
+    this.buttons.push(new Button(width*0.7,height*0.85,40,40,"pink",buttonImages[0]));
+    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"pink",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -982,14 +982,14 @@ class ShopMenu23 extends Menu{ //coral 4
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.3,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.5,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.7,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"red"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.3,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.5,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.7,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"red",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -1005,14 +1005,14 @@ class ShopMenu24 extends Menu{ //water colors
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.3,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.5,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.7,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"red"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.3,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.5,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.7,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"red",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -1028,14 +1028,14 @@ class ShopMenu25 extends Menu{ //ground types
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.3,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.5,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.7,height*0.85,40,40,"red"));
-    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"red"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.3,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.5,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.7,height*0.85,40,40,"red",buttonImages[0]));
+    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"red",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -1051,11 +1051,11 @@ class ShopMenu26 extends Menu{ //sharks
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"teal"));
-    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"blue"));
-    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"blue"));
-    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"blue"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.2,height*0.85,40,40,"teal",buttonImages[0]));
+    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"blue",buttonImages[0]));
+    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"blue",buttonImages[0]));
+    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"blue",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -1071,9 +1071,9 @@ class ShopMenu27 extends Menu{ //other
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"purple"));
-    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"purple"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"purple",buttonImages[0]));
+    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"purple",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -1095,9 +1095,9 @@ class ShopMenu28 extends Menu{ //other
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"blue"));
-    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"blue"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"blue",buttonImages[0]));
+    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"blue",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -1113,9 +1113,9 @@ class ShopMenu29 extends Menu{ //other
   constructor(){
     super();
     this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
-    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
-    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"yellow"));
-    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"yellow"));
+    this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow","back"));
+    this.buttons.push(new Button(width*0.4,height*0.85,40,40,"yellow",buttonImages[0]));
+    this.buttons.push(new Button(width*0.6,height*0.85,40,40,"yellow",buttonImages[0]));
   }
   update(){
     if(this.buttons[0].state === true){

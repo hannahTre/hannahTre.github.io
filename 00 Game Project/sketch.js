@@ -2,6 +2,53 @@
 // Hannah Tremaine
 // Start - November 30th, 2023
 
+p5.Image.prototype.resizeNN = function (w, h) {
+  "use strict";
+
+  // Locally cache current image's canvas' dimension properties:
+  const { width, height } = this.canvas;
+
+  // Sanitize dimension parameters:
+  w = ~~Math.abs(w), h = ~~Math.abs(h);
+
+  // Quit prematurely if both dimensions are equal or parameters are both 0:
+  if (w === width && h === height || !(w | h))  return this;
+
+  // Scale dimension parameters:
+  if (!w)  w = h*width  / height | 0; // only when parameter w is 0
+  if (!h)  h = w*height / width  | 0; // only when parameter h is 0
+
+  const img = new p5.Image(w, h), // creates temporary image
+        sx = w / width, sy = h / height; // scaled coords. for current image
+
+  this.loadPixels(), img.loadPixels(); // initializes both 8-bit RGBa pixels[]
+
+  // Create 32-bit viewers for current & temporary 8-bit RGBa pixels[]:
+  const pixInt = new Int32Array(this.pixels.buffer),
+        imgInt = new Int32Array(img.pixels.buffer);
+
+  // Transfer current to temporary pixels[] by 4 bytes (32-bit) at once:
+  for (var x = 0, y = 0; y < h; x = 0) {
+    const curRow = width * ~~(y/sy), tgtRow = w * y++;
+
+    while (x < w) {
+      const curIdx = curRow + ~~(x/sx), tgtIdx = tgtRow + x++;
+      imgInt[tgtIdx] = pixInt[curIdx];
+    }
+  }
+
+  img.updatePixels(); // updates temp 8-bit RGBa pixels[] w/ its current state
+
+  // Resize current image to temporary image's dimensions:
+  this.canvas.width = this.width = w, this.canvas.height = this.height = h;
+  this.drawingContext.drawImage(img.canvas, 0, 0, w, h, 0, 0, w, h);
+
+  return this;
+};
+
+
+
+
 //preload stuff
 let fishImages = [];
 let decorImages = [];
@@ -67,7 +114,7 @@ function setup() {
     uiImages.push(loadImage("assets/ui/ui buttons/b"+(i)+".png",finishedLoading))
   }
   for(let i =0; i<5;i++){ //plant images
-    backgroundImages.push(loadImage("assets/backgrounds/water"+(i)+".png",finishedLoading))
+    backgroundImages.push(loadImage("assets/backgrounds/bg"+(i)+".png",finishedLoading))
   }
   testFish = new Fish(0,200,tinyFishR);
   shopMenu1 = new ShopMenu1();
@@ -145,7 +192,10 @@ function draw() {
   else{
     clear();
     fill(100);
-    rect(0,0,width,height);
+    backgroundImages[2].resizeNN(800,400)
+    backgroundImages[0].resizeNN(800,400)
+    image(backgroundImages[2],0,0);
+    image(backgroundImages[0],0,0);
     openMenuButton.update();
     openMenuButton.draw();
     chooseMenu();
@@ -314,20 +364,31 @@ class Fish{
 }
 
 class Button{
-  constructor(x,y,w,h,color){
+  constructor(x,y,w,h,color,image){
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
     this.color = color;
+    this.image = image;
 
     this.state = false;
   }
 
   draw(){
     if(this.state===false){
-      fill(this.color);
-      rect(this.x,this.y,this.w,this.h);
+      if(this.image === "x"){
+        this.image = this.image.resizeNN(this.width,this.height);
+        image(this.image,this.width,this.height);
+      }
+      if(this.image === "back"){
+        fill(this.color);
+        rect(this.x,this.y,this.w,this.h);
+      }
+      else{
+        this.image = this.image.resizeNN(this.width,this.height);
+        image(this.image,this.width,this.height);
+      }
     }
     else{
       fill("green");
@@ -354,8 +415,12 @@ class Preview{
 
   preview(){
     if(previewMode){
+      image(uiImages[9],width-32,0,64,32);
       animation(this.item,mouseX,mouseY);
-      if(mousePressed&&isTriggered){
+      if(mousePressed&&isTriggered&&mouseX>width-32&&mouseX<width&&mouseY>0&&mouseY<64){
+        previewMode = false;
+      }
+      else if(mousePressed&&isTriggered){
         previewMode = false;
         fishInAquarium.push(new Fish(mouseX,mouseY,this.item));
       }
@@ -383,7 +448,7 @@ class Menu{
 class ShopMenu1 extends Menu{ //Main shop menu,, pick which TYPE of item
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"))
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red",))
     this.buttons.push(new Button(width*0.2,height*0.85,40,40,"red"));
     this.buttons.push(new Button(width*0.4,height*0.85,40,40,"blue"));
     this.buttons.push(new Button(width*0.6,height*0.85,40,40,"purple"));
@@ -414,7 +479,7 @@ class ShopMenu1 extends Menu{ //Main shop menu,, pick which TYPE of item
 class ShopMenu2 extends Menu{ //FISH MAIN MENU
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red")); //exit
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x")); //exit
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow")); //back
     this.buttons.push(new Button(width*0.2,height*0.85,40,40,"orange")); //fish
     this.buttons.push(new Button(width*0.5,height*0.85,40,40,"green")); //shark
@@ -443,7 +508,7 @@ class ShopMenu2 extends Menu{ //FISH MAIN MENU
 class ShopMenu3 extends Menu{ //DECOR MAIN MENU
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.2,height*0.85,40,40,"teal"));
     this.buttons.push(new Button(width*0.5,height*0.85,40,40,"purple"));
@@ -471,7 +536,7 @@ class ShopMenu3 extends Menu{ //DECOR MAIN MENU
 class ShopMenu4 extends Menu{ //BACKGROUND MAIN MENU
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.4,height*0.85,40,40,"pink"));
     this.buttons.push(new Button(width*0.6,height*0.85,40,40,"coral"));
@@ -496,7 +561,7 @@ class ShopMenu4 extends Menu{ //BACKGROUND MAIN MENU
 class ShopMenu5 extends Menu{ //BACKGROUND MAIN MENU
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.4,height*0.85,40,40,"teal"));
     this.buttons.push(new Button(width*0.6,height*0.85,40,40,"blue"));
@@ -520,7 +585,7 @@ class ShopMenu5 extends Menu{ //BACKGROUND MAIN MENU
 class ShopMenu6 extends Menu{ //types of fish
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red")); //exit
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x")); //exit
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow")); //back
     this.buttons.push(new Button(width*0.2,height*0.85,40,40,"black")); //tiny
     this.buttons.push(new Button(width*0.5,height*0.85,40,40,"white")); //normal
@@ -548,7 +613,7 @@ class ShopMenu6 extends Menu{ //types of fish
 class ShopMenu7 extends Menu{ //tiny fish colors
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.2,height*0.85,40,40,"orange"));
     this.buttons.push(new Button(width*0.4,height*0.85,40,40,"orange"));
@@ -572,7 +637,7 @@ class ShopMenu7 extends Menu{ //tiny fish colors
 class ShopMenu8 extends Menu{ //normal fish colors
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.2,height*0.85,40,40,"purple"));
     this.buttons.push(new Button(width*0.4,height*0.85,40,40,"purple"));
@@ -592,7 +657,7 @@ class ShopMenu8 extends Menu{ //normal fish colors
 class ShopMenu9 extends Menu{ //long fish colors
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.2,height*0.85,40,40,"pink"));
     this.buttons.push(new Button(width*0.4,height*0.85,40,40,"pink"));
@@ -612,7 +677,7 @@ class ShopMenu9 extends Menu{ //long fish colors
 class ShopMenu10 extends Menu{ //bubble and clam
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.4,height*0.85,40,40,"pink"));
     this.buttons.push(new Button(width*0.6,height*0.85,40,40,"pink"));
@@ -630,7 +695,7 @@ class ShopMenu10 extends Menu{ //bubble and clam
 class ShopMenu11 extends Menu{ //chest options
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.4,height*0.85,40,40,"yellow"));
     this.buttons.push(new Button(width*0.6,height*0.85,40,40,"yellow"));
@@ -648,7 +713,7 @@ class ShopMenu11 extends Menu{ //chest options
 class ShopMenu12 extends Menu{ //shell shapes
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.2,height*0.85,40,40,"blue"));
     this.buttons.push(new Button(width*0.35,height*0.85,40,40,"cyan"));
@@ -684,7 +749,7 @@ class ShopMenu12 extends Menu{ //shell shapes
 class ShopMenu13 extends Menu{ //shell shapes
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.12,height*0.85,40,40,"blue"));
     this.buttons.push(new Button(width*0.28,height*0.85,40,40,"blue"));
@@ -706,7 +771,7 @@ class ShopMenu13 extends Menu{ //shell shapes
 class ShopMenu14 extends Menu{ //shell shapes
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.12,height*0.85,40,40,"pink"));
     this.buttons.push(new Button(width*0.28,height*0.85,40,40,"pink"));
@@ -728,7 +793,7 @@ class ShopMenu14 extends Menu{ //shell shapes
 class ShopMenu15 extends Menu{ //shell shapes
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.12,height*0.85,40,40,"purple"));
     this.buttons.push(new Button(width*0.28,height*0.85,40,40,"purple"));
@@ -750,7 +815,7 @@ class ShopMenu15 extends Menu{ //shell shapes
 class ShopMenu16 extends Menu{ //shell shapes
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.12,height*0.85,40,40,"orange"));
     this.buttons.push(new Button(width*0.28,height*0.85,40,40,"orange"));
@@ -772,7 +837,7 @@ class ShopMenu16 extends Menu{ //shell shapes
 class ShopMenu17 extends Menu{ //shell shapes
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.12,height*0.85,40,40,"red"));
     this.buttons.push(new Button(width*0.28,height*0.85,40,40,"red"));
@@ -794,7 +859,7 @@ class ShopMenu17 extends Menu{ //shell shapes
 class ShopMenu18 extends Menu{ //coral options
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.2,height*0.85,40,40,"orange"));
     this.buttons.push(new Button(width*0.4,height*0.85,40,40,"yellow"));
@@ -826,7 +891,7 @@ class ShopMenu18 extends Menu{ //coral options
 class ShopMenu19 extends Menu{ //seaweed
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.2,height*0.85,40,40,"red"));
     this.buttons.push(new Button(width*0.4,height*0.85,40,40,"red"));
@@ -847,7 +912,7 @@ class ShopMenu19 extends Menu{ //seaweed
 class ShopMenu20 extends Menu{ //coral 1
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.2,height*0.85,40,40,"orange"));
     this.buttons.push(new Button(width*0.3,height*0.85,40,40,"orange"));
@@ -870,7 +935,7 @@ class ShopMenu20 extends Menu{ //coral 1
 class ShopMenu21 extends Menu{ //coral 2
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.2,height*0.85,40,40,"green"));
     this.buttons.push(new Button(width*0.3,height*0.85,40,40,"green"));
@@ -893,7 +958,7 @@ class ShopMenu21 extends Menu{ //coral 2
 class ShopMenu22 extends Menu{ //coral 3
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.2,height*0.85,40,40,"pink"));
     this.buttons.push(new Button(width*0.3,height*0.85,40,40,"pink"));
@@ -916,7 +981,7 @@ class ShopMenu22 extends Menu{ //coral 3
 class ShopMenu23 extends Menu{ //coral 4
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.2,height*0.85,40,40,"red"));
     this.buttons.push(new Button(width*0.3,height*0.85,40,40,"red"));
@@ -939,7 +1004,7 @@ class ShopMenu23 extends Menu{ //coral 4
 class ShopMenu24 extends Menu{ //water colors
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.2,height*0.85,40,40,"red"));
     this.buttons.push(new Button(width*0.3,height*0.85,40,40,"red"));
@@ -962,7 +1027,7 @@ class ShopMenu24 extends Menu{ //water colors
 class ShopMenu25 extends Menu{ //ground types
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.2,height*0.85,40,40,"red"));
     this.buttons.push(new Button(width*0.3,height*0.85,40,40,"red"));
@@ -985,7 +1050,7 @@ class ShopMenu25 extends Menu{ //ground types
 class ShopMenu26 extends Menu{ //sharks
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.2,height*0.85,40,40,"teal"));
     this.buttons.push(new Button(width*0.4,height*0.85,40,40,"blue"));
@@ -1005,7 +1070,7 @@ class ShopMenu26 extends Menu{ //sharks
 class ShopMenu27 extends Menu{ //other
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.4,height*0.85,40,40,"purple"));
     this.buttons.push(new Button(width*0.6,height*0.85,40,40,"purple"));
@@ -1029,7 +1094,7 @@ class ShopMenu27 extends Menu{ //other
 class ShopMenu28 extends Menu{ //other
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.4,height*0.85,40,40,"blue"));
     this.buttons.push(new Button(width*0.6,height*0.85,40,40,"blue"));
@@ -1047,7 +1112,7 @@ class ShopMenu28 extends Menu{ //other
 class ShopMenu29 extends Menu{ //other
   constructor(){
     super();
-    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red"));
+    this.buttons.push(new Button(width*0.02,height*0.81,10,10,"red","x"));
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow"));
     this.buttons.push(new Button(width*0.4,height*0.85,40,40,"yellow"));
     this.buttons.push(new Button(width*0.6,height*0.85,40,40,"yellow"));

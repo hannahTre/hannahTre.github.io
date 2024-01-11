@@ -146,7 +146,7 @@ function setup() {
   shopMenu27 = new ShopMenu27();
   shopMenu28 = new ShopMenu28();
   shopMenu29 = new ShopMenu29();
-  openMenuButton = new Button(width*0.02,height*0.02,20,20,"magenta")
+  //openMenuButton = new Button(width*0.02,height*0.02,20,20,"magenta","none");
 }
 
 function createSprites(){
@@ -196,8 +196,8 @@ function draw() {
     backgroundImages[0].resizeNN(800,400);
     image(backgroundImages[2],0,0);
     image(backgroundImages[0],0,0);
-    openMenuButton.update();
-    openMenuButton.draw();
+    //openMenuButton.update();
+    //openMenuButton.draw();
     chooseMenu();
     animation(smallFishO, width/2, 100);
     animation(tinyFishPu, 200, 100);
@@ -378,15 +378,13 @@ class Button{
   draw(){
     if(this.state===false){
       if(this.image === "x"){
-        //this.image = this.image.resizeNN(this.width,this.height);
         image(uiImages[1],this.x,this.y);
       }
-      if(this.image === "back"){
+      else if(this.image === "back"){
         fill(this.color);
         rect(this.x,this.y,this.w,this.h);
       }
       else{
-        //this.image = this.image.resizeNN(this.width,this.height);
         image(this.image,this.x,this.y);
       }
     }

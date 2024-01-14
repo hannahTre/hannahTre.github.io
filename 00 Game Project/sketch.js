@@ -152,9 +152,11 @@ function setup() {
 
 function createSprites(){
   for(let i =0; i<51;i++){ //button images
-    buttonImages[i] = buttonImages[i].resizeNN(40,40);
+    buttonImages[i].resizeNN(40,40);
   }
-  uiImages[9] = uiImages[9].resizeNN(64,32);
+  uiImages[9].resizeNN(64,32);
+  backgroundImages[2].resizeNN(800,400);
+  backgroundImages[0].resizeNN(800,400);
   //fish
   tinyFishO = loadAnimation(fishImages[0], { frameSize: [16, 16], frames: 32 });
   tinyFishPi = loadAnimation(fishImages[1], { frameSize: [16, 16], frames: 32 });
@@ -196,17 +198,10 @@ function draw() {
   }
   else{
     clear();
-    fill(100);
-    backgroundImages[2].resizeNN(800,400)
-    backgroundImages[0].resizeNN(800,400)
     image(backgroundImages[2],0,0);
     image(backgroundImages[0],0,0);
     openMenuButton.update();
     openMenuButton.draw();
-    chooseMenu();
-    animation(smallFishO, width/2, 100);
-    animation(tinyFishPu, 200, 100);
-    animation(jellyP,width/2,height/2);
     for(p of previewTest){
       p.preview();
     }
@@ -217,6 +212,7 @@ function draw() {
     for(i of stationaryInAquarium){
       i.draw();
     }
+    chooseMenu();
   }
 }
 
@@ -416,21 +412,16 @@ class Button{
 
 }
 
-class Preview{
-  constructor(item,type){
+class AniPreview{ //if the item is animated
+  constructor(item){
     this.item = item;
-    this.type = type;
   }
 
   preview(){
     if(previewMode){
+      menuOn=0;
       image(uiImages[9],width-32,0);
-      if(this.type==="fish"){
-        animation(this.item,mouseX,mouseY);
-      }
-      if(this.type==="stationary"){
-        image(this.image,mouseX,mouseY);
-      }
+      animation(this.item,mouseX,mouseY)
       if(mousePressed&&isTriggered&&mouseX>width-32&&mouseX<width&&mouseY>0&&mouseY<64){
         previewMode = false;
         previewTest.pop();
@@ -438,16 +429,33 @@ class Preview{
       else if(mousePressed&&isTriggered){
         previewMode = false;
         previewTest.pop();
-        if(this.type === "fish"){
-          fishInAquarium.push(new Fish(mouseX,mouseY,this.item));
-        }
-        if(this.type === "stationary"){
-          stationaryInAquarium.push(new Stationary(mouseX,mouseY,this.item));
-        }
+        fishInAquarium.push(new Fish(mouseX,mouseY,this.item));
       }
     }
   }
+}
 
+class Preview{ //if the item is not animated
+  constructor(item){
+    this.item = item;
+  }
+
+  preview(){
+    if(previewMode){
+      menuOn=0;
+      image(uiImages[9],width-32,0);
+      image(this.item,mouseX,mouseY);
+      if(mousePressed&&isTriggered&&mouseX>width-32&&mouseX<width&&mouseY>0&&mouseY<64 ||mousePressed&&isTriggered&&mouseX>0&&mouseX<width&&mouseY>0&&mouseY<height*0.65){
+        previewMode = false;
+        previewTest.pop();
+      }
+      else if(mousePressed&&isTriggered){
+        previewMode = false;
+        previewTest.pop();
+        stationaryInAquarium.push(new Stationary(mouseX,mouseY,this.item));
+      }
+    }
+  }
 }
 
 class Menu{
@@ -533,7 +541,7 @@ class ShopMenu3 extends Menu{ //DECOR MAIN MENU
     this.buttons.push(new Button(width*0.03,height*0.81,10,10,"yellow",uiImages[1]));
     this.buttons.push(new Button(width*0.2,height*0.85,40,40,"teal",buttonImages[0]));
     this.buttons.push(new Button(width*0.5,height*0.85,40,40,"purple",buttonImages[0]));
-    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"blue",buttonImages[0]));
+    this.buttons.push(new Button(width*0.8,height*0.85,40,40,"blue",buttonImages[22]));
   }
   update(){
     if(this.buttons[0].state === true){
@@ -650,19 +658,19 @@ class ShopMenu7 extends Menu{ //tiny fish colors
     }
     if(this.buttons[2].state===true){
       previewMode = true;
-      previewTest.push(new Preview(tinyFishO,"fish"));
+      previewTest.push(new AniPreview(tinyFishO));
     }
     if(this.buttons[3].state===true){
       previewMode = true;
-      previewTest.push(new Preview(tinyFishR,"fish"));
+      previewTest.push(new AniPreview(tinyFishR));
     }
     if(this.buttons[4].state===true){
       previewMode = true;
-      previewTest.push(new Preview(tinyFishPi,"fish"));
+      previewTest.push(new AniPreview(tinyFishPi));
     }
     if(this.buttons[5].state===true){
       previewMode = true;
-      previewTest.push(new Preview(tinyFishPu,"fish"));
+      previewTest.push(new AniPreview(tinyFishPu));
     }
   }
 }
@@ -686,19 +694,19 @@ class ShopMenu8 extends Menu{ //normal fish colors
     }
     if(this.buttons[2].state===true){
       previewMode = true;
-      previewTest.push(new Preview(longFishO,"fish"));
+      previewTest.push(new AniPreview(longFishO));
     }
     if(this.buttons[3].state===true){
       previewMode = true;
-      previewTest.push(new Preview(longFishR,"fish"));
+      previewTest.push(new AniPreview(longFishR));
     }
     if(this.buttons[4].state===true){
       previewMode = true;
-      previewTest.push(new Preview(longFishB,"fish"));
+      previewTest.push(new AniPreview(longFishB));
     }
     if(this.buttons[5].state===true){
       previewMode = true;
-      previewTest.push(new Preview(longFishP,"fish"));
+      previewTest.push(new AniPreview(longFishP));
     }
   }
 }
@@ -722,19 +730,19 @@ class ShopMenu9 extends Menu{ //long fish colors
     }
     if(this.buttons[2].state===true){
       previewMode = true;
-      previewTest.push(new Preview(smallFishO,"fish"));
+      previewTest.push(new AniPreview(smallFishO));
     }
     if(this.buttons[3].state===true){
       previewMode = true;
-      previewTest.push(new Preview(smallFishG,"fish"));
+      previewTest.push(new AniPreview(smallFishG));
     }
     if(this.buttons[4].state===true){
       previewMode = true;
-      previewTest.push(new Preview(smallFishP,"fish"));
+      previewTest.push(new AniPreview(smallFishP));
     }
     if(this.buttons[5].state===true){
       previewMode = true;
-      previewTest.push(new Preview(smallFishB,"fish"));
+      previewTest.push(new AniPreview(smallFishB));
     }
   }
 }
@@ -811,7 +819,7 @@ class ShopMenu12 extends Menu{ //shell shapes
   }
 }
 
-class ShopMenu13 extends Menu{ //shell shapes
+class ShopMenu13 extends Menu{ //shell colors
   constructor(){
     super();
     this.buttons.push(new Button(width*0.01,height*0.81,10,10,"red",uiImages[3]));
@@ -832,12 +840,32 @@ class ShopMenu13 extends Menu{ //shell shapes
     }
     if(this.buttons[2].state===true){
       previewMode = true;
-      previewTest.push(new Preview(decorImages[4],"stationary"));
+      previewTest.push(new Preview(decorImages[4]));
+    }
+    if(this.buttons[3].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[5]));
+    }
+    if(this.buttons[4].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[6]));
+    }
+    if(this.buttons[5].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[7]));
+    }
+    if(this.buttons[6].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[8]));
+    }
+    if(this.buttons[7].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[9]));
     }
   }
 }
 
-class ShopMenu14 extends Menu{ //shell shapes
+class ShopMenu14 extends Menu{ //shell colors
   constructor(){
     super();
     this.buttons.push(new Button(width*0.01,height*0.81,10,10,"red",uiImages[3]));
@@ -856,10 +884,34 @@ class ShopMenu14 extends Menu{ //shell shapes
     if(this.buttons[1].state===true){
       menuOn = 12;
     }
+    if(this.buttons[2].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[10]));
+    }
+    if(this.buttons[3].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[11]));
+    }
+    if(this.buttons[4].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[12]));
+    }
+    if(this.buttons[5].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[13]));
+    }
+    if(this.buttons[6].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[14]));
+    }
+    if(this.buttons[7].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[15]));
+    }
   }
 }
 
-class ShopMenu15 extends Menu{ //shell shapes
+class ShopMenu15 extends Menu{ //shell colors
   constructor(){
     super();
     this.buttons.push(new Button(width*0.01,height*0.81,10,10,"red",uiImages[3]));
@@ -878,10 +930,34 @@ class ShopMenu15 extends Menu{ //shell shapes
     if(this.buttons[1].state===true){
       menuOn = 12;
     }
+    if(this.buttons[2].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[16]));
+    }
+    if(this.buttons[3].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[17]));
+    }
+    if(this.buttons[4].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[18]));
+    }
+    if(this.buttons[5].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[19]));
+    }
+    if(this.buttons[6].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[20]));
+    }
+    if(this.buttons[7].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[21]));
+    }
   }
 }
 
-class ShopMenu16 extends Menu{ //shell shapes
+class ShopMenu16 extends Menu{ //shell colors
   constructor(){
     super();
     this.buttons.push(new Button(width*0.01,height*0.81,10,10,"red",uiImages[3]));
@@ -900,10 +976,34 @@ class ShopMenu16 extends Menu{ //shell shapes
     if(this.buttons[1].state===true){
       menuOn = 12;
     }
+    if(this.buttons[2].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[22]));
+    }
+    if(this.buttons[3].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[23]));
+    }
+    if(this.buttons[4].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[24]));
+    }
+    if(this.buttons[5].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[25]));
+    }
+    if(this.buttons[6].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[26]));
+    }
+    if(this.buttons[7].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[27]));
+    }
   }
 }
 
-class ShopMenu17 extends Menu{ //shell shapes
+class ShopMenu17 extends Menu{ //shell colors
   constructor(){
     super();
     this.buttons.push(new Button(width*0.01,height*0.81,10,10,"red",uiImages[3]));
@@ -921,6 +1021,30 @@ class ShopMenu17 extends Menu{ //shell shapes
     }
     if(this.buttons[1].state===true){
       menuOn = 12;
+    }
+    if(this.buttons[2].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[28]));
+    }
+    if(this.buttons[3].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[29]));
+    }
+    if(this.buttons[4].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[30]));
+    }
+    if(this.buttons[5].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[31]));
+    }
+    if(this.buttons[6].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[32]));
+    }
+    if(this.buttons[7].state===true){
+      previewMode = true;
+      previewTest.push(new Preview(decorImages[33]));
     }
   }
 }
@@ -1135,19 +1259,19 @@ class ShopMenu26 extends Menu{ //sharks
     }
     if(this.buttons[2].state===true){
       previewMode = true;
-      previewTest.push(new Preview(angler,"fish"));
+      previewTest.push(new AniPreview(angler));
     }
     if(this.buttons[3].state===true){
       previewMode = true;
-      previewTest.push(new Preview(swordfish,"fish"));
+      previewTest.push(new AniPreview(swordfish));
     }
     if(this.buttons[4].state===true){
       previewMode = true;
-      previewTest.push(new Preview(shark,"fish"));
+      previewTest.push(new AniPreview(shark));
     }
     if(this.buttons[5].state===true){
       previewMode = true;
-      previewTest.push(new Preview(sawshark,"fish"));
+      previewTest.push(new AniPreview(sawshark));
     }
   }
 }
@@ -1193,11 +1317,11 @@ class ShopMenu28 extends Menu{ //other
     }
     if(this.buttons[2].state===true){
       previewMode = true;
-      previewTest.push(new Preview(jellyP,"fish"));
+      previewTest.push(new AniPreview(jellyP));
     }
     if(this.buttons[3].state===true){
       previewMode = true;
-      previewTest.push(new Preview(jellyB,"fish"));
+      previewTest.push(new AniPreview(jellyB));
     }
   }
 }
@@ -1219,11 +1343,11 @@ class ShopMenu29 extends Menu{ //other
     }
     if(this.buttons[2].state===true){
       previewMode = true;
-      previewTest.push(new Preview(squidR,"fish"));
+      previewTest.push(new AniPreview(squidR));
     }
     if(this.buttons[3].state===true){
       previewMode = true;
-      previewTest.push(new Preview(squidP,"fish"));
+      previewTest.push(new AniPreview(squidP));
     }
   }
 }

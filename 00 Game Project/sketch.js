@@ -58,6 +58,9 @@ let uiImages = [];
 let backgroundImages = [];
 let programStarted = false;
 let totalCounter = 0;
+
+let startMenuImg;
+let startMenu = true;
 //shop items animation
 //fish
 let tinyFishO, tinyFishPi, tinyFishPu, tinyFishR;
@@ -86,6 +89,9 @@ let menuOn = 0; //0 off, 1 shopMenu1, 2 shopMenu2 and so forth
 let previewMode = false;
 let previewTest = [];
 
+//Money variable
+let money = 10;
+
 //in aquarium
 let fishInAquarium = [];
 let stationaryInAquarium = [];
@@ -99,6 +105,7 @@ function finishedLoading(){
 
 function setup() {
   createCanvas(800,400);
+  startMenuImg = loadImage("assets/backgrounds/FISHING FRIENDS.png")
   for(let i =0; i<18;i++){ //fish images
     fishImages.push(loadImage("assets/shopItems/fish/fish"+(i)+".png",finishedLoading));
   }
@@ -197,22 +204,41 @@ function draw() {
     }  
   }
   else{
-    clear();
-    image(backgroundImages[2],0,0);
-    image(backgroundImages[0],0,0);
-    openMenuButton.update();
-    openMenuButton.draw();
-    for(p of previewTest){
-      p.preview();
+    if(startMenu){
+      image(startMenuImg,0,0);
+      if(mouseX>width*0.35,mouseX<width*0.65,mouseY>height*0.4,mouseY<height*0.6&&isTriggered){
+        startMenu = false;
+      }
     }
-    for(f of fishInAquarium){
-      f.draw();
-      f.move();
+    else{
+      clear();
+      image(backgroundImages[2],0,0);
+      image(backgroundImages[0],0,0);
+      openMenuButton.update();
+      openMenuButton.draw();
+      for(p of previewTest){
+        p.preview();
+      }
+      for(f of fishInAquarium){
+        f.draw();
+        f.move();
+      }
+      for(i of stationaryInAquarium){
+        i.draw();
+      }
+      chooseMenu();
+      fill(4, 94, 219);
+      strokeWeight(3);
+      stroke(255);
+      rectMode(CENTER);
+      rect(width/2,30,80,25)
+      noStroke();
+      fill(255);
+      textAlign(CENTER);
+      textSize(20);
+      text(money,width/2,37);
+      rectMode(CORNER);
     }
-    for(i of stationaryInAquarium){
-      i.draw();
-    }
-    chooseMenu();
   }
 }
 
@@ -464,6 +490,8 @@ class Menu{
   }
 
   draw(){
+    strokeWeight(3);
+    stroke(255);
     fill(200);
     rect(0,height*0.8,width,height*0.2);
     for(let i = 0;i<this.buttons.length;i++){

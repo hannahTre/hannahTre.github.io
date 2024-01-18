@@ -161,7 +161,7 @@ function setup() {
   shopMenu27 = new ShopMenu27();
   shopMenu28 = new ShopMenu28();
   shopMenu29 = new ShopMenu29();
-  openMenuButton = new Button(width*0.02,height*0.02,20,20,"magenta",uiImages[1]);
+  openMenuButton = new Button(width*0.01,height*0.02,32,32,"magenta",uiImages[5]);
   waterVisable = backgroundImages[1];
   groundVisable = backgroundImages[0];
 }
@@ -176,12 +176,13 @@ function createSprites(){
   for(let i =6; i<34;i++){ //plant images
     plantImages[i].resizeNN(64,64);
   }
-  uiImages[9].resizeNN(64,32);
   for(let i =0; i<6;i++){ //plant images
     backgroundImages[i].resizeNN(800,400);
   }
-  decorImages[34].resizeNN(96,64);
-  decorImages[35].resizeNN(96,64);
+  // decorImages[34].resizeNN(96,64);
+  // decorImages[35].resizeNN(96,64);
+  uiImages[9].resizeNN(64,32);
+  uiImages[5].resizeNN(32,32);
   //fish
   tinyFishO = loadAnimation(fishImages[0], { frameSize: [16, 16], frames: 32 });
   tinyFishPi = loadAnimation(fishImages[1], { frameSize: [16, 16], frames: 32 });
@@ -205,8 +206,8 @@ function createSprites(){
   squidP = loadAnimation(fishImages[21], { frameSize: [32, 16], frames: 4 });
   //decor
   bubbles = loadAnimation(decorImages[0], { frameSize: [8, 8], frames: 8 });
-  chest1 = loadAnimation(decorImages[34], { frameSize: [32, 128], frames: 3 });
-  chest2 = loadAnimation(decorImages[35], { frameSize: [32, 128], frames: 3 });
+  chest1 = loadAnimation(decorImages[34], { frameSize: [16, 32], frames: 3 });
+  chest2 = loadAnimation(decorImages[35], { frameSize: [16, 32], frames: 3 });
   //seaweed
   seaweed1= loadAnimation(plantImages[0], { frameSize: [32, 64], frames: 96 });
   seaweed2= loadAnimation(plantImages[1], { frameSize: [32, 64], frames: 96 });
